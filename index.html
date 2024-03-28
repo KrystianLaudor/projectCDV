@@ -1,12 +1,27 @@
 <!DOCTYPE html>
 <html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sprzedaż Komputerów</title>
-</head>
-<body>
-    <h2>Tescik</h2>
-    
-</body>
+    <link rel="stylesheet" href="./styles/global.scss" />
+  </head>
+  <body>
+    <h2>CD KOMP</h2>
+    <div>
+      Witaj na Naszej stronie!
+      <p>
+        Możesz tutaj kupić profesjonalny komputer. Kliknij gdziekolwiek, aby przejść do
+        głównej strony, gdzie zaproponujemy Ci sprzęt odpowiedni dla Ciebie.
+      </p>
+    </div>
+
+    <script>
+      function goToMain() {
+        window.location.href = "./main.html";
+      }
+      document.addEventListener("click", goToMain);
+      setTimeout(goToMain, 10000);
+    </script>
+  </body>
 </html>
