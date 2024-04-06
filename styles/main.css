@@ -29,7 +29,7 @@ img {
 
 }
 
-.pcContainer {
+.mainContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
@@ -83,3 +83,22 @@ img {
   }
 }
 
+.hidden {
+  display: none;
+}
+
+.columnFlex {
+  flex-direction: column;
+  align-content: center;
+}
+
+.accessories {
+  height: 130px;
+  width: auto;
+  max-width: 220px;
+  object-fit: cover;
+}
+
+.accessImg {
+  height: 150px;
+}

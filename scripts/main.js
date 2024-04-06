@@ -53,9 +53,13 @@ let computers = [
 ];
 console.log(computers);
 
+// Declarations
+const $formContainer = document.querySelector('#formContainer');
+const $backToPcBtn = document.querySelector('#backToPc');
+
 
 // Generator of pcBoxes that contain data of individual computers
-const $pcContainer = document.querySelector('.pcContainer');
+const $pcContainer = document.querySelector('#pcContainer');
 
 let createPcBox = function (pcArray) {
  
@@ -65,6 +69,7 @@ let createPcBox = function (pcArray) {
     const divPcImage = document.createElement('div');
     const divPcData = document.createElement('div');
     divPcBox.classList.add('pcBox');
+    // divPcBox.addEventListener('click', switchScreen);
     divPcImage.classList.add('pcImage');
     divPcData.classList.add('pcData');
 
@@ -99,4 +104,25 @@ let createPcBox = function (pcArray) {
 
 createPcBox(computers);
 
-//...............$ TUTAJ ZAMIANA
+function switchScreen() {
+  $pcContainer.classList.toggle('hidden');
+  $formContainer.classList.toggle('hidden');
+};
+
+function checkPcBox(event) {
+  let clickedElement = event.target;
+  while (clickedElement !== $pcContainer) {
+      if (clickedElement.classList.contains('pcBox')) {
+          switchScreen();
+          return;
+      }
+      clickedElement = clickedElement.parentNode;
+  }
+}
+
+$backToPcBtn.addEventListener('click', switchScreen); // USUNĄĆ POTEM
+$pcContainer.addEventListener('click', checkPcBox);
+
+
+
+

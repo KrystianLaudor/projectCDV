@@ -11,27 +11,64 @@
   <body>
     <h2 class="heading">Test</h2>
 
-    <div class="pcContainer">
+    <div id="pcContainer" class="mainContainer"></div>
 
-      <!-- TESTOWY pcBOX -->
-      <!-- <div class="pcBox">
-        <div class="pcImage">
-          <img src="./assets/computers/computer1.jpg" />
-        </div>
-        <div class="pcData">
-          <p>Procesor: <span class="procesor">Intel Core i3-10100F</span></p>
-          <p>Price: <span class="price">2300 PLN</span></p>
-          <p>Graphics Card: <span class="graphicsCard">-</span></p>
-          <p>Motherboard: <span class="motherboard">MSI</span></p>
-          <p>RAM: <span class="RAM">8 GB</span></p>
-          <p>Category: <span class="category">Office</span></p>
-          <p>Disc SSD: <span class="discSSD">SSD 512 GB</span></p>
-          <p>Disc HDD: <span class="discHDD">-</span></p>
-          <p>System: <span class="system">Win11</span></p>
-          <p>Used: <span class="used">No</span></p>
-        </div>
-      </div> -->
+    <div id="formContainer" class="mainContainer hidden columnFlex">
+      <form>
+        <p>Płatność:</p>
+        <input type="radio" id="leasing" name="payment" value="leasing" />
+        <label for="leasing">Leasing</label>
+        <input type="radio" id="cash" name="payment" value="cash" />
+        <label for="cash">Gotówka</label><br />
 
+        <label for="fname">Imię i nazwisko:</label><br />
+        <input type="text" id="fname" name="fname" /><br />
+
+        <label for="deliverDate">Wybierz datę dostawy:</label>
+        <select id="deliverDate" name="deliverDate" form="deliverDate">
+          <option value="chooseDate">Data</option>
+          <option value="date2week">xx/xx/xxxx</option>
+        </select>
+      </form>
+
+      Dodatkowe akcesoria:
+      <div class="mainContainer">
+        <div class="pcBox">
+          <div class="pcImage accessImg">
+            <img src="./assets/kraken.jpg" alt="kraken" class="accessories"/>
+          </div>
+          <div class="pcData">
+            <p>Chłodzenie wodne Kraken</p>
+            <p>Cena: 699 zł</p>
+            <p>Zmniejszenie temperatury o 20%</p>
+          </div>
+        </div>
+        <div class="pcBox">
+          <div class="pcImage accessImg">
+            <img src="./assets/logitech.jpg" alt="logitech" class="accessories"/>
+          </div>
+          <div class="pcData">
+            <p>Zestaw logitech</p>
+            <p>Cena: 899 zł</p>
+            <p>Idealny zestaw do komputera</p>
+          </div>
+        </div>
+        <div class="pcBox">
+          <div class="pcImage accessImg">
+            <img src="./assets/samsung.jpg" alt="samsung" class="accessories"/>
+          </div>
+          <div class="pcData">
+            <p>Dysk Samsung SSD 1 TB</p>
+            <p>Cena: 499 zł</p>
+            <p>Powiększ swoją pamięć</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button id="goToSummary">Zakup</button>
+        <button id="backToPc">Powrót do wyboru</button>
+      </div>
     </div>
   </body>
 </html>
