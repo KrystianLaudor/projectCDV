@@ -1,3 +1,5 @@
+//...................................................................
+// Create class Computer
 class Computer {
   constructor(
     procesor,
@@ -26,6 +28,7 @@ class Computer {
   };
 }
 
+//...................................................................
 // Renaming all files with bash at location ./assets/computer
 /* 
 i=1
@@ -34,6 +37,9 @@ mv "$file" "computer${i}.jpg"
 i=$((i+1))
 done
 */
+
+//...................................................................
+// DataBase of all desktops (PC)
 
 const computer0 = new Computer('Apple iMac 27\"', 10000, 'AMD Radeon Pro 5700 XT', 'Apple', '32 GB', 'Professional', './assets/computers/computer0.jpg', 'SSD 1 TB', false, 'macOS');
 const computer1 = new Computer('Apple Mac Pro', 25000, 'AMD Radeon Pro Vega II Duo', 'Apple', '64 GB', 'Professional', './assets/computers/computer1.jpg', 'SSD 4 TB', false, 'macOS');
@@ -53,75 +59,103 @@ let computers = [
 ];
 console.log(computers);
 
+//...................................................................
 // Declarations
 const $formContainer = document.querySelector('#formContainer');
 const $backToPcBtn = document.querySelector('#backToPc');
+const $chosenPcContainer = document.querySelector('#chosenPcContainer');
 
-
+//.................................................................
 // Generator of pcBoxes that contain data of individual computers
 const $pcContainer = document.querySelector('#pcContainer');
 
-let createPcBox = function (pcArray) {
- 
-  for (let pc of pcArray) {
+function createStructurePcBox(pc, container) {
 
-    const divPcBox = document.createElement('div');
-    const divPcImage = document.createElement('div');
-    const divPcData = document.createElement('div');
-    divPcBox.classList.add('pcBox');
-    // divPcBox.addEventListener('click', switchScreen);
-    divPcImage.classList.add('pcImage');
-    divPcData.classList.add('pcData');
+  const divPcBox = document.createElement('div');
+  const divPcImage = document.createElement('div');
+  const divPcData = document.createElement('div');
+  divPcBox.setAttribute('data-description', JSON.stringify(pc));
 
-    const pcImage = document.createElement('img');
-    pcImage.src = pc['image'];
-    divPcImage.appendChild(pcImage);
+  divPcBox.classList.add('pcBox');
+  divPcImage.classList.add('pcImage');
+  divPcData.classList.add('pcData');
 
-    for ( let desk in computers[0] ) {
+  const pcImage = document.createElement('img');
+  pcImage.src = pc['image'];
+  divPcImage.appendChild(pcImage);
 
-      if(desk === 'image') { continue }
-      
-      const pSet = document.createElement('p');
-      const spanSet = document.createElement('span');
-      spanSet.classList.add(desk);
+  for (let desk in computers[0]) {
 
-      if(pc[desk] == false || pc[desk] == true) { 
-        continue;
-      } else {
-        spanSet.innerText = pc[desk];
-      }
+    if (desk === 'image') { continue }
 
-      pSet.innerText = desk.slice(0,1).toUpperCase() + desk.slice(1,desk.length) + ': ';
-      pSet.appendChild(spanSet);
-      divPcData.appendChild(pSet);
+    const pSet = document.createElement('p');
+    const spanSet = document.createElement('span');
+    spanSet.classList.add(desk);
+
+    if (pc[desk] == false || pc[desk] == true) {
+      continue;
+    } else {
+      spanSet.innerText = pc[desk];
     }
 
-    divPcBox.appendChild(divPcImage);
-    divPcBox.appendChild(divPcData);
-    $pcContainer.appendChild(divPcBox);
+    pSet.innerText = desk.slice(0, 1).toUpperCase() + desk.slice(1, desk.length) + ': ';
+    pSet.appendChild(spanSet);
+    divPcData.appendChild(pSet);
+  }
+
+  divPcBox.appendChild(divPcImage);
+  divPcBox.appendChild(divPcData);
+  container.appendChild(divPcBox);
+}
+
+
+let createPcBox = function (pcArray) {
+  for (let pc of pcArray) {
+    createStructurePcBox(pc, $pcContainer)
   }
 }
 
 createPcBox(computers);
 
+//......................................................
+// Switch Screen
 function switchScreen() {
   $pcContainer.classList.toggle('hidden');
   $formContainer.classList.toggle('hidden');
 };
 
+// Check if clicked PcBox
 function checkPcBox(event) {
   let clickedElement = event.target;
   while (clickedElement !== $pcContainer) {
-      if (clickedElement.classList.contains('pcBox')) {
-          switchScreen();
-          return;
+    if (clickedElement.classList.contains('pcBox')) {
+      switchScreen();
+      return;
+    }
+    clickedElement = clickedElement.parentNode;
+
+    if (clickedElement.classList.contains('pcBox')) {
+      removeAllChild($chosenPcContainer);
+      
+      const chosenPc = JSON.parse(clickedElement.getAttribute('data-description'))
+      console.log(chosenPc)
+      createStructurePcBox(chosenPc, $chosenPcContainer)
+      for (let parameter in chosenPc) {
+        console.log(chosenPc[parameter])
       }
-      clickedElement = clickedElement.parentNode;
+    }
   }
 }
 
-$backToPcBtn.addEventListener('click', switchScreen); // USUNĄĆ POTEM
+function removeAllChild(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  };
+};
+
+
 $pcContainer.addEventListener('click', checkPcBox);
+$backToPcBtn.addEventListener('click', switchScreen);
 
 
 
