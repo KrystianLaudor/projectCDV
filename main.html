@@ -9,65 +9,36 @@
     <script src="./scripts/main.js" defer></script>
   </head>
   <body>
-    <h2 class="heading">Test</h2>
+    <h2 class="heading">Hand-assembled computer sets</h2>
 
     <div id="pcContainer" class="mainContainer"></div>
 
     <div id="formContainer" class="mainContainer hidden columnFlex">
       <form>
-        <p>Płatność:</p>
+        <p>Payment:</p>
         <input type="radio" id="leasing" name="payment" value="leasing" />
         <label for="leasing">Leasing</label>
         <input type="radio" id="cash" name="payment" value="cash" />
-        <label for="cash">Gotówka</label><br />
+        <label for="cash">Cash</label><br />
 
-        <label for="fname">Imię i nazwisko:</label><br />
-        <input type="text" id="fname" name="fname" /><br />
+        <label for="fname">First and Last Name:</label><br />
+        <input type="text" id="fname" name="fname" placeholder="2 strings" /><br />
 
-        <label for="deliverDate">Wybierz datę dostawy:</label>
+        <label for="deliverDate">Select a delivery date:</label>
         <select id="deliverDate" name="deliverDate" form="deliverDate">
-          <option value="chooseDate">Data</option>
+          <option value="chooseDate">Date</option>
           <option value="date2week">xx/xx/xxxx</option>
         </select>
       </form>
 
-      Dodatkowe akcesoria:
-      <div class="mainContainer">
-        <div class="pcBox">
-          <div class="pcImage accessImg">
-            <img src="./assets/kraken.jpg" alt="kraken" class="accessories"/>
-          </div>
-          <div class="pcData">
-            <p>Chłodzenie wodne Kraken</p>
-            <p>Cena: 699 zł</p>
-            <p>Zmniejszenie temperatury o 20%</p>
-          </div>
-        </div>
-        <div class="pcBox">
-          <div class="pcImage accessImg">
-            <img src="./assets/logitech.jpg" alt="logitech" class="accessories"/>
-          </div>
-          <div class="pcData">
-            <p>Zestaw logitech</p>
-            <p>Cena: 899 zł</p>
-            <p>Idealny zestaw do komputera</p>
-          </div>
-        </div>
-        <div class="pcBox">
-          <div class="pcImage accessImg">
-            <img src="./assets/samsung.jpg" alt="samsung" class="accessories"/>
-          </div>
-          <div class="pcData">
-            <p>Dysk Samsung SSD 1 TB</p>
-            <p>Cena: 499 zł</p>
-            <p>Powiększ swoją pamięć</p>
-          </div>
-        </div>
-      </div>
+      Additional accessories:
+      <div id='accContainer' class="mainContainer"></div>
+
+      <div>Sum: <span id="sum"></span> PLN</div>
 
       <div>
-        <button id="goToSummary">Zakup</button>
-        <button id="backToPc">Powrót do wyboru</button>
+        <button id="goToSummary">Buy</button>
+        <button id="backToPc">Back to selection</button>
       </div>
 
       <div id="chosenPcContainer"></div>
