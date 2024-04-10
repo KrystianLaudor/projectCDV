@@ -16,13 +16,20 @@
     <div id="formContainer" class="mainContainer hidden columnFlex">
       <form>
         <p>Payment:</p>
-        <input type="radio" id="leasing" name="payment" value="leasing" />
-        <label for="leasing">Leasing</label>
-        <input type="radio" id="cash" name="payment" value="cash" />
-        <label for="cash">Cash</label><br />
+        <div class="radioFrame">
+          <input type="radio" id="leasing" name="payment" value="leasing" />
+          <label for="leasing">Leasing</label>
+          <input type="radio" id="cash" name="payment" value="cash" />
+          <label for="cash">Cash</label><br />
+        </div>
 
         <label for="fname">First and Last Name:</label><br />
-        <input type="text" id="fname" name="fname" placeholder="2 strings" /><br />
+        <input
+          type="text"
+          id="fname"
+          name="fname"
+          placeholder="Name"
+        /><br />
 
         <label for="deliverDate">Select a delivery date:</label>
         <select id="deliverDate" name="deliverDate" form="deliverDate">
@@ -32,7 +39,7 @@
       </form>
 
       Additional accessories:
-      <div id='accContainer' class="mainContainer"></div>
+      <div id="accContainer" class="mainContainer"></div>
 
       <div>Sum: <span id="sum"></span> PLN</div>
 
@@ -40,8 +47,12 @@
         <button id="goToSummary">Buy</button>
         <button id="backToPc">Back to selection</button>
       </div>
-
-      <div id="chosenPcContainer"></div>
     </div>
+
+    <div id="summaryContainer" class="mainContainer hidden">
+      <div id="chosenPcContainer"></div>
+
+    </div>
+
   </body>
 </html>

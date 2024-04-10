@@ -96,7 +96,13 @@ const patterns = {
 const $fname = document.querySelector('#fname');
 const $leasing = document.getElementById('leasing');
 const $cash = document.getElementById('cash');
+const $deliverDateSelect = document.getElementById('deliverDate');
+const $secondOption = $deliverDateSelect.options[1];
+const $goToSummaryBtn = document.querySelector('#goToSummary');
+const $radioFrame = document.querySelector('.radioFrame');
 let summary = 'invalid';
+let arrayAccLocalStorage = [];
+const $summaryContainer = document.querySelector('#summaryContainer')
 
 //.................................................................
 // Generator of pcBoxes that contain data of individual computers
@@ -107,7 +113,8 @@ function createStructurePcBox(pc, container, array) {
   const divPcBox = document.createElement('div');
   const divPcImage = document.createElement('div');
   const divPcData = document.createElement('div');
-  divPcBox.setAttribute('data-description', JSON.stringify(pc));
+  // divPcBox.setAttribute('data-description', JSON.stringify(pc)); // created and saved json string to data description with all informations about pc
+  divPcBox.setAttribute('data-description', array.indexOf(pc));
 
   divPcBox.classList.add('pcBox');
   divPcImage.classList.add('pcImage');
@@ -157,30 +164,56 @@ let createPcBox = function (array, container) {
 createPcBox(computers, $pcContainer);
 createPcBox(accessories, $accContainer);
 
+
 //......................................................
 // FUNCTIONS
 
-// Switch Screen
+//......................................................
+// Load data from localStorage
+function loadLocalStorage() {
+  let radioButton = localStorage.getItem('radioButton')
+  if (radioButton === 'leasingChecked') {
+    $leasing.checked = 1;
+  }
+  if (radioButton === 'cashChecked') {
+    $cash.checked = 1;
+  }
+  $fname.value = localStorage.getItem('FirstAndLastName');
+
+  let saveDate = localStorage.getItem('Date', $secondOption.innerText);
+  if (date2week() === saveDate) {
+    $deliverDateSelect.selectedIndex = 1;
+  }
+  return
+};
+
+loadLocalStorage()
+
 function switchScreen() {
   $pcContainer.classList.toggle('hidden');
   $formContainer.classList.toggle('hidden');
 };
 
-// Check if clicked PcBox and other functions
 function checkPcBox(event) {
   let clickedElement = event.target;
   while (clickedElement !== $pcContainer) {
     if (clickedElement.classList.contains('pcBox')) {
       switchScreen();
-
-      removeAllChild($chosenPcContainer);
-      const chosenPc = JSON.parse(clickedElement.getAttribute('data-description'));
-      createStructurePcBox(chosenPc, $chosenPcContainer, computers);
+      const chosenPc = createChosenPc(clickedElement)
       addToSum(chosenPc['price']);
       return;
     }
     clickedElement = clickedElement.parentNode;
   }
+}
+
+function createChosenPc( clickedElement ) {
+  removeAllChild($chosenPcContainer);
+  localStorage.setItem('chosenPC', JSON.stringify(computers[clickedElement.dataset.description]));
+  // const chosenPc = JSON.parse(clickedElement.getAttribute('data-description')); // read before created json string  with all informations about pc
+  const chosenPc = computers[clickedElement.dataset.description];
+  createStructurePcBox(chosenPc, $chosenPcContainer, computers);
+  return chosenPc;
 }
 
 function removeAllChild(parent) {
@@ -206,10 +239,17 @@ function addAcc(event) {
 
       if (clickedElement.classList.contains('addedAcc')) {
         clickedElement.classList.remove('addedAcc');
-        addToSum(-JSON.parse(clickedElement.getAttribute('data-description'))['price']);
+        addToSum(-accessories[clickedElement.dataset.description]['price']); // addToSum(-JSON.parse(clickedElement.getAttribute('data-description'))['price']);
+        arrayAccLocalStorage = arrayAccLocalStorage.filter(element => {
+          return element != JSON.stringify(accessories[clickedElement.dataset.description]);
+        })
+        localStorage.setItem('chosenAcc', arrayAccLocalStorage);
       } else {
         clickedElement.classList.add('addedAcc');
-        addToSum(JSON.parse(clickedElement.getAttribute('data-description'))['price']);
+        addToSum(accessories[clickedElement.dataset.description]['price']); // addToSum(JSON.parse(clickedElement.getAttribute('data-description'))['price']);
+        arrayAccLocalStorage.push(JSON.stringify(accessories[clickedElement.dataset.description]));
+
+        localStorage.setItem('chosenAcc', arrayAccLocalStorage);
       }
       return;
     }
@@ -225,40 +265,118 @@ function resetAddAcc() {
 }
 
 function validate(field, regex) {
-  if( regex.test(field.value) ) {
+  if (regex.test(field.value)) {
     field.className = 'valid';
   } else {
     field.className = 'invalid';
   }
 }
 
-// ADD DATE
-function validSummary () {
-  if ( ($leasing.checked || $cash.checked) && $fname.classList.contains('valid') ) {
-    return summary = 'valid';
+function date2week() {
+  const todayDate = new Date();
+  todayDate.setDate(todayDate.getDate() + 14);
+  const day = todayDate.getDate();
+  const month = (todayDate.getMonth() + 1).toString().padStart(2, '0');
+  const year = todayDate.getFullYear();
+  $secondOption.innerText = day + '-' + month + '-' + year;
+  return $secondOption.innerText;
+}
+
+function checkDate() {
+  if ($deliverDateSelect.selectedIndex !== 1) {
+    $deliverDateSelect.classList.add('invalid');
+    $deliverDateSelect.classList.remove('valid');
+  } else {
+    $deliverDateSelect.classList.add('valid');
+    $deliverDateSelect.classList.remove('invalid');
   }
 }
 
+function checkPayment() {
+  if ($leasing.checked || $cash.checked) {
+    $radioFrame.classList.add('valid');
+    $radioFrame.classList.remove('invalid');
+  } else {
+    $radioFrame.classList.add('invalid');
+    $radioFrame.classList.remove('valid');
+  }
+}
+
+function validSummary() {
+  if (($leasing.checked || $cash.checked) && $fname.classList.contains('valid') && $deliverDateSelect.classList.contains('valid')) {
+    summary = 'valid';
+  } else {
+    summary = 'invalid';
+  }
+  openSummary();
+}
+
+function resetChosenAccLocalStorage() {
+  arrayAccLocalStorage = [];
+  localStorage.setItem('chosenAcc', arrayAccLocalStorage);
+}
+
+function openSummary() {
+  if (summary === 'valid') {
+    $formContainer.classList.add('hidden');
+    $summaryContainer.classList.remove('hidden');
+
+    const divSum = document.createElement('div');
+    const h2Sum = document.createElement('h2');
+    h2Sum.innerText = 'Thank you for purchasing!'
+    divSum.appendChild(h2Sum);
+    $summaryContainer.appendChild(divSum);
 
 
+    const pSum = document.createElement('p');
+  }
+}
 
 
 
 //......................................................
 // AddEventListeners
 
-$fname.addEventListener('change', (e) => {
-  console.log($fname.value)
+$fname.addEventListener('change', () => {
   validate($fname, patterns['firstAndLast']);
+  localStorage.setItem('FirstAndLastName', $fname.value);
 })
 
-$pcContainer.addEventListener('click', checkPcBox);
+$pcContainer.addEventListener('click', (e) => {
+  checkPcBox(e);
+  resetChosenAccLocalStorage();
+});
+
 $backToPcBtn.addEventListener('click', () => {
   switchScreen();
   resetAddAcc();
   resetSum();
 });
 $accContainer.addEventListener('click', addAcc);
+
+$deliverDateSelect.addEventListener('click', () => {
+  date2week();
+});
+$deliverDateSelect.addEventListener('change', () => {
+  checkDate();
+  localStorage.setItem('Date', $secondOption.innerText);
+});
+
+$leasing.addEventListener('change', () => {
+  checkPayment();
+  localStorage.setItem('radioButton', 'leasingChecked');
+});
+$cash.addEventListener('change', () => {
+  checkPayment();
+  localStorage.setItem('radioButton', 'cashChecked');
+});
+
+$goToSummaryBtn.addEventListener('click', () => {
+  checkDate();
+  checkPayment();
+  validate($fname, patterns['firstAndLast']);
+  validSummary();
+});
 
 
 
