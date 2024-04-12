@@ -145,7 +145,7 @@ function createStructurePcBox(pc, container, array) {
 
     if ((container !== $accContainer) || (desk == 'price')) { pSet.innerText = desk.slice(0, 1).toUpperCase() + desk.slice(1, desk.length) + ': ' };
 
-    if (container == $chosenPcContainer && desk == 'price' ) {
+    if (container == $chosenPcContainer && desk == 'price') {
       continue;
     }
 
@@ -329,6 +329,15 @@ function repairName2(nameString) {
     .join(' ');
 }
 
+function clearStorage() {
+  localStorage.removeItem('chosenAcc');
+  localStorage.removeItem('FirstAndLastName');
+  localStorage.removeItem('Date');
+  localStorage.removeItem('summarySum');
+  localStorage.removeItem('Pay');
+  localStorage.removeItem('chosenPC');
+}
+
 function openSummary() {
   if (summary === 'valid') {
     $formContainer.classList.add('hidden');
@@ -340,12 +349,18 @@ function openSummary() {
     const pDate = document.createElement('p');
     const pPay = document.createElement('p');
     const pSum = document.createElement('p');
+    const addedAccText = document.createElement('p');
+
+    divSum.classList.add('divSum');
+    addedAccText.classList.add('addedAccText');
+
     const firstAndLastName = localStorage.getItem('FirstAndLastName');
     h2Sum.innerText = 'Thank you for purchasing!'
-    pName.innerText = 'First and Last Name: \n' + repairName2(firstAndLastName);
+    pName.innerText = 'First and Last Name: ' + repairName2(firstAndLastName);
     pDate.innerText = 'Delivery date: ' + localStorage.getItem('Date');
     pPay.innerText = 'Pay: ' + localStorage.getItem('Pay');
     pSum.innerText = 'Amount: ' + localStorage.getItem('summarySum') + ' PLN';
+    addedAccText.innerText = 'Added Accessories:'
     divSum.appendChild(h2Sum);
     divSum.appendChild(pName);
     divSum.appendChild(pDate);
@@ -353,9 +368,29 @@ function openSummary() {
     divSum.appendChild(pSum);
     $summaryContainer.appendChild(divSum);
 
+    const accArrayJson = localStorage.getItem('chosenAcc');  
+    const chosenAccessories = JSON.parse(`[${accArrayJson}]`);
+    if (accArrayJson != '') {
+      divSum.appendChild(addedAccText);
+    }
+
+    for(let acc of chosenAccessories) {
+      const divAcc = document.createElement('div');
+      const accImage = document.createElement('img');
+      const pAcc = document.createElement('p');
+      
+      divAcc.classList.add('accDivSummary');
+      accImage.classList.add('accImgSummary');
+      pAcc.classList.add('accPSummary');
+      accImage.src = acc['image'];
+      pAcc.innerText = acc['accessory'];
+      divAcc.appendChild(accImage);
+      divAcc.appendChild(pAcc);
+      divSum.appendChild(divAcc);
+    }
+    clearStorage();
   }
 }
-
 
 
 //......................................................

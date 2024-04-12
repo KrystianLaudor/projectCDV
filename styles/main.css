@@ -117,3 +117,26 @@ img {
   border: 2px solid rgba(9, 138, 5, 0.5);
   background-color: rgba(2, 116, 11, 0.144);
 }
+
+.accDivSummary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.accImgSummary {
+  height: 50px;
+  width: 90px;
+}
+
+.divSum {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.addedAccText {
+  font-size: large;
+  font-weight: bold;
+  margin-top: 15px;
+}
