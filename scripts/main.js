@@ -127,7 +127,7 @@ function createStructurePcBox(pc, container, array) {
   if (container == $accContainer) {
     divPcImage.classList.add('accessImg');
     pcImage.classList.add('accessories');
-  }
+  } //........
 
   for (let desk in array[0]) {
     if (desk === 'image') { continue }
@@ -144,6 +144,10 @@ function createStructurePcBox(pc, container, array) {
     }
 
     if ((container !== $accContainer) || (desk == 'price')) { pSet.innerText = desk.slice(0, 1).toUpperCase() + desk.slice(1, desk.length) + ': ' };
+
+    if (container == $chosenPcContainer && desk == 'price' ) {
+      continue;
+    }
 
     pSet.appendChild(spanSet);
     divPcData.appendChild(pSet);
@@ -171,11 +175,11 @@ createPcBox(accessories, $accContainer);
 //......................................................
 // Load data from localStorage
 function loadLocalStorage() {
-  let radioButton = localStorage.getItem('radioButton')
-  if (radioButton === 'leasingChecked') {
+  let pay = localStorage.getItem('Pay')
+  if (pay === 'leasing') {
     $leasing.checked = 1;
   }
-  if (radioButton === 'cashChecked') {
+  if (pay === 'cash') {
     $cash.checked = 1;
   }
   $fname.value = localStorage.getItem('FirstAndLastName');
@@ -207,7 +211,7 @@ function checkPcBox(event) {
   }
 }
 
-function createChosenPc( clickedElement ) {
+function createChosenPc(clickedElement) {
   removeAllChild($chosenPcContainer);
   localStorage.setItem('chosenPC', JSON.stringify(computers[clickedElement.dataset.description]));
   // const chosenPc = JSON.parse(clickedElement.getAttribute('data-description')); // read before created json string  with all informations about pc
@@ -225,6 +229,7 @@ function removeAllChild(parent) {
 function addToSum(...add) {
   sum = sum + add.reduce((total, current) => total + current, 0);
   $sum.innerText = sum;
+  localStorage.setItem('summarySum', sum);
   return sum;
 }
 
@@ -316,6 +321,14 @@ function resetChosenAccLocalStorage() {
   localStorage.setItem('chosenAcc', arrayAccLocalStorage);
 }
 
+function repairName2(nameString) {
+  return nameString = nameString.replace(/\s+/g, ' ')
+    .trim()
+    .split(' ')
+    .map(word => word.slice(0, 1).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 function openSummary() {
   if (summary === 'valid') {
     $formContainer.classList.add('hidden');
@@ -323,12 +336,23 @@ function openSummary() {
 
     const divSum = document.createElement('div');
     const h2Sum = document.createElement('h2');
+    const pName = document.createElement('p');
+    const pDate = document.createElement('p');
+    const pPay = document.createElement('p');
+    const pSum = document.createElement('p');
+    const firstAndLastName = localStorage.getItem('FirstAndLastName');
     h2Sum.innerText = 'Thank you for purchasing!'
+    pName.innerText = 'First and Last Name: \n' + repairName2(firstAndLastName);
+    pDate.innerText = 'Delivery date: ' + localStorage.getItem('Date');
+    pPay.innerText = 'Pay: ' + localStorage.getItem('Pay');
+    pSum.innerText = 'Amount: ' + localStorage.getItem('summarySum') + ' PLN';
     divSum.appendChild(h2Sum);
+    divSum.appendChild(pName);
+    divSum.appendChild(pDate);
+    divSum.appendChild(pPay);
+    divSum.appendChild(pSum);
     $summaryContainer.appendChild(divSum);
 
-
-    const pSum = document.createElement('p');
   }
 }
 
@@ -364,11 +388,11 @@ $deliverDateSelect.addEventListener('change', () => {
 
 $leasing.addEventListener('change', () => {
   checkPayment();
-  localStorage.setItem('radioButton', 'leasingChecked');
+  localStorage.setItem('Pay', 'leasing');
 });
 $cash.addEventListener('change', () => {
   checkPayment();
-  localStorage.setItem('radioButton', 'cashChecked');
+  localStorage.setItem('Pay', 'cash');
 });
 
 $goToSummaryBtn.addEventListener('click', () => {
