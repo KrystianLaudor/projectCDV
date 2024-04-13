@@ -102,7 +102,8 @@ const $goToSummaryBtn = document.querySelector('#goToSummary');
 const $radioFrame = document.querySelector('.radioFrame');
 let summary = 'invalid';
 let arrayAccLocalStorage = [];
-const $summaryContainer = document.querySelector('#summaryContainer')
+const $summaryContainer = document.querySelector('#summaryContainer');
+const $filter = document.querySelector('.filter');
 
 //.................................................................
 // Generator of pcBoxes that contain data of individual computers
@@ -325,7 +326,7 @@ function repairName2(nameString) {
   return nameString = nameString.replace(/\s+/g, ' ')
     .trim()
     .split(' ')
-    .map(word => word.slice(0, 1).toUpperCase() + word.slice(1))
+    .map(word => word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');
 }
 
@@ -368,17 +369,17 @@ function openSummary() {
     divSum.appendChild(pSum);
     $summaryContainer.appendChild(divSum);
 
-    const accArrayJson = localStorage.getItem('chosenAcc');  
+    const accArrayJson = localStorage.getItem('chosenAcc');
     const chosenAccessories = JSON.parse(`[${accArrayJson}]`);
     if (accArrayJson != '') {
       divSum.appendChild(addedAccText);
     }
 
-    for(let acc of chosenAccessories) {
+    for (let acc of chosenAccessories) {
       const divAcc = document.createElement('div');
       const accImage = document.createElement('img');
       const pAcc = document.createElement('p');
-      
+
       divAcc.classList.add('accDivSummary');
       accImage.classList.add('accImgSummary');
       pAcc.classList.add('accPSummary');
@@ -388,6 +389,17 @@ function openSummary() {
       divAcc.appendChild(pAcc);
       divSum.appendChild(divAcc);
     }
+    const divBtn = document.createElement('div');
+    const btn = document.createElement('button');
+    btn.classList.add('btn');
+    divBtn.classList.add('divBtn');
+    btn.innerText = 'Start';
+    divBtn.appendChild(btn);
+    $summaryContainer.parentNode.appendChild(divBtn);
+    btn.addEventListener('click', function () {
+      location.reload();
+    });
+
     clearStorage();
   }
 }
@@ -436,6 +448,3 @@ $goToSummaryBtn.addEventListener('click', () => {
   validate($fname, patterns['firstAndLast']);
   validSummary();
 });
-
-
-
