@@ -1,27 +1,63 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sprzedaż Komputerów</title>
+    <title>PC Shop</title>
     <link rel="stylesheet" href="./styles/global.css" />
+    <link rel="stylesheet" href="./styles/main.css" />
+    <script src="./scripts/main.js" defer></script>
   </head>
   <body>
-    <h2>CD KOMP</h2>
-    <div>
-      Witaj na Naszej stronie!
-      <p>
-        Możesz tutaj kupić profesjonalny komputer. Kliknij gdziekolwiek, aby przejść do
-        głównej strony, gdzie zaproponujemy Ci sprzęt odpowiedni dla Ciebie.
-      </p>
+    <h2 class="heading">Computer sets</h2>
+
+    <div class="filter">
+      Filter:
+      <input type="text" class="filterInput">
+      <button class="filterBtn">Filter</button>
+    </div>
+    <div id="pcContainer" class="mainContainer"></div>
+
+    <div id="formContainer" class="mainContainer hidden columnFlex">
+      <form>
+        <p>Payment:</p>
+        <div class="radioFrame">
+          <input type="radio" id="leasing" name="payment" value="leasing" />
+          <label for="leasing">Leasing</label>
+          <input type="radio" id="cash" name="payment" value="cash" />
+          <label for="cash">Cash</label><br />
+        </div>
+
+        <label for="fname">First and Last Name:</label><br />
+        <input
+          type="text"
+          id="fname"
+          name="fname"
+          placeholder="Name"
+        /><br />
+
+        <label for="deliverDate">Select a delivery date:</label>
+        <select id="deliverDate" name="deliverDate" form="deliverDate">
+          <option value="chooseDate">Date</option>
+          <option value="date2week">xx/xx/xxxx</option>
+        </select>
+      </form>
+
+      Additional accessories:
+      <div id="accContainer" class="mainContainer"></div>
+
+      <div>Sum: <span id="sum"></span> PLN</div>
+
+      <div>
+        <button id="goToSummary">Buy</button>
+        <button id="backToPc">Back to selection</button>
+      </div>
     </div>
 
-    <script>
-      function goToMain() {
-        window.location.href = "./main.html";
-      }
-      document.addEventListener("click", goToMain);
-      setTimeout(goToMain, 10000);
-    </script>
+    <div id="summaryContainer" class="mainContainer hidden">
+      <div id="chosenPcContainer"></div>
+
+    </div>
+
   </body>
 </html>

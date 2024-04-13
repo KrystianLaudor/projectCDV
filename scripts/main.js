@@ -11,7 +11,7 @@ class Computer {
     image = '',
     discSSD = false,
     discHDD = false,
-    system = true,
+    system = false,
     used = false,
   ) {
     this.procesor = procesor,
@@ -104,6 +104,9 @@ let summary = 'invalid';
 let arrayAccLocalStorage = [];
 const $summaryContainer = document.querySelector('#summaryContainer');
 const $filter = document.querySelector('.filter');
+const $filterInput = document.querySelector('.filterInput');
+const $filterBtn = document.querySelector('.filterBtn');
+const form = document.querySelector('form');
 
 //.................................................................
 // Generator of pcBoxes that contain data of individual computers
@@ -173,6 +176,9 @@ createPcBox(accessories, $accContainer);
 //......................................................
 // FUNCTIONS
 
+$filterInput.focus();
+loadLocalStorage();
+
 //......................................................
 // Load data from localStorage
 function loadLocalStorage() {
@@ -192,9 +198,8 @@ function loadLocalStorage() {
   return
 };
 
-loadLocalStorage()
-
 function switchScreen() {
+  $filter.classList.toggle('noVisibility')
   $pcContainer.classList.toggle('hidden');
   $formContainer.classList.toggle('hidden');
 };
@@ -404,6 +409,36 @@ function openSummary() {
   }
 }
 
+function filterPC(array) {
+  const keywords = $filterInput.value.toLowerCase().replace(/\s+/g, ' ')
+    .trim()
+    .split(' ');
+
+  const computersWithAllKeywords = array.filter(computer => {
+    return keywords.every(keyword => {
+      return Object.values(computer).some(value => {
+        if (typeof value === 'string') {
+          return value.toLowerCase().includes(keyword);
+        } else {
+          return false;
+        }
+      });
+    });
+  });
+
+  if (computersWithAllKeywords.length === 0) {
+    $pcContainer.innerText = 'Sorry, we didn\'t find any computers';
+  }
+  return computersWithAllKeywords;
+}
+
+function clear$pcContainer() {
+  if ($pcContainer) {
+    while ($pcContainer.firstChild) {
+      $pcContainer.removeChild($pcContainer.firstChild)
+    }
+  }
+}
 
 //......................................................
 // AddEventListeners
@@ -416,12 +451,14 @@ $fname.addEventListener('change', () => {
 $pcContainer.addEventListener('click', (e) => {
   checkPcBox(e);
   resetChosenAccLocalStorage();
+  $fname.focus();
 });
 
 $backToPcBtn.addEventListener('click', () => {
   switchScreen();
   resetAddAcc();
   resetSum();
+  $filterInput.focus()
 });
 $accContainer.addEventListener('click', addAcc);
 
@@ -447,4 +484,41 @@ $goToSummaryBtn.addEventListener('click', () => {
   checkPayment();
   validate($fname, patterns['firstAndLast']);
   validSummary();
+});
+
+$filterBtn.addEventListener('click', () => {
+  clear$pcContainer();
+  createPcBox(filterPC(computers), $pcContainer)
+});
+
+form.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+  }
+});
+
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Enter') {
+    if (!$pcContainer.classList.contains('hidden')) {
+      $filterBtn.click();
+      $filterBtn.blur();
+      $filterInput.focus()
+    }
+    if (!$formContainer.classList.contains('hidden')) {
+      $goToSummaryBtn.click();
+      $goToSummaryBtn.blur();
+    }
+  }
+});
+
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    if (!$formContainer.classList.contains('hidden')) {
+      $backToPcBtn.click();
+    }
+    if (!$summaryContainer.classList.contains('hidden')) {
+      $startBtn = document.querySelector('.btn')
+      $startBtn.click();
+    }
+  }
 });

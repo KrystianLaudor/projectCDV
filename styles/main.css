@@ -84,6 +84,10 @@ img {
   }
 }
 
+.noVisibility {
+  visibility: hidden;
+}
+
 .hidden {
   display: none;
 }
@@ -158,10 +162,11 @@ img {
  display: flex;
  justify-content: center;
  align-items: center;
+ margin-bottom: 15px;
+ gap: 10px;
 }
 
 .filter input {
   width: 70%;
   max-width: 300px;
-  margin: 15px;
 }
