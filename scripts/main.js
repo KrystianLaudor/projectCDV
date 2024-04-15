@@ -56,10 +56,10 @@ done
 // Database of all desktops (PC) and Accessories
 
 const computer0 = new Computer('Apple iMac 27\"', 10000, 'AMD Radeon Pro 5700 XT', 'Apple', '32 GB', 'Professional', './assets/computers/computer0.jpg', '1 TB', false, 'macOS');
-const computer1 = new Computer('Apple Mac Pro', 25000, 'AMD Radeon Pro Vega II Duo', 'Apple', '64 GB', 'Professional', './assets/computers/computer1.jpg', '4 TB', false, 'macOS');
+const computer1 = new Computer('Apple Mac Pro', 15000, 'AMD Radeon Pro Vega II Duo', 'Apple', '64 GB', 'Professional', './assets/computers/computer1.jpg', '4 TB', false, 'macOS');
 const computer2 = new Computer('AMD Ryzen 5 5600X', 6410, 'RTX 3060', 'ASUS', '16 GB', 'Home', './assets/computers/computer2.jpg', '512 GB', '2 TB', 'Win 11');
 const computer3 = new Computer('Intel Core i5-11600K', 7210, 'GTX 1660 Super', 'Gigabyte', '16 GB', 'Gaming', './assets/computers/computer3.jpg', '2 TB', '1 TB');
-const computer4 = new Computer('AMD Ryzen 9 5900X', 17550, 'RTX 3080', 'ASRock', '32 GB', 'Professional', './assets/computers/computer4.jpg', '1.5 TB', false, 'Win 11');
+const computer4 = new Computer('AMD Ryzen 9 5900X', 14550, 'RTX 3080', 'ASRock', '32 GB', 'Professional', './assets/computers/computer4.jpg', '1.5 TB', false, 'Win 11');
 const computer5 = new Computer('Intel Core i7-11700K', 11050, 'RTX 3060 Ti', 'MSI', '32 GB', 'Gaming', './assets/computers/computer5.jpg', '1 TB', '1 TB');
 const computer6 = new Computer('AMD Ryzen 7 3800X', 5460, 'GTX 1650', 'ASUS', '8 GB', 'Home', './assets/computers/computer6.jpg', '512 GB', '512 GB');
 const computer7 = new Computer('Intel Core i5-11400F', 6980, 'GTX 1660', 'Gigabyte', '8 GB', 'Office', './assets/computers/computer7.jpg', '1.5 TB', false, 'Win Vista');
@@ -92,6 +92,7 @@ const $sum = document.querySelector('#sum');
 let sum = 0;
 const patterns = {
   firstAndLast: /^\s*[a-zA-Z]+\s+[a-zA-Z]+\s*$/,
+  priceRange: /^(0{1,})?(0|[1-9]\d{0,4}|30000)$/,
 }
 const $fname = document.querySelector('#fname');
 const $leasing = document.getElementById('leasing');
@@ -107,6 +108,8 @@ const $filter = document.querySelector('.filter');
 const $filterInput = document.querySelector('.filterInput');
 const $filterBtn = document.querySelector('.filterBtn');
 const form = document.querySelector('form');
+const $priceText = document.querySelector('#priceText');
+const $priceSlider = document.querySelector('#priceSlider');
 
 //.................................................................
 // Generator of pcBoxes that contain data of individual computers
@@ -199,7 +202,7 @@ function loadLocalStorage() {
 };
 
 function switchScreen() {
-  $filter.classList.toggle('noVisibility')
+  $filter.classList.toggle('hidden');
   $pcContainer.classList.toggle('hidden');
   $formContainer.classList.toggle('hidden');
 };
@@ -234,7 +237,7 @@ function removeAllChild(parent) {
 
 function addToSum(...add) {
   sum = sum + add.reduce((total, current) => total + current, 0);
-  $sum.innerText = sum;
+  $sum.innerText = sum.toFixed(2);;
   localStorage.setItem('summarySum', sum);
   return sum;
 }
@@ -364,8 +367,8 @@ function openSummary() {
     h2Sum.innerText = 'Thank you for purchasing!'
     pName.innerText = 'First and Last Name: ' + repairName2(firstAndLastName);
     pDate.innerText = 'Delivery date: ' + localStorage.getItem('Date');
-    pPay.innerText = 'Pay: ' + localStorage.getItem('Pay');
-    pSum.innerText = 'Amount: ' + localStorage.getItem('summarySum') + ' PLN';
+    pPay.innerText = 'Pay: ' + localStorage.getItem('Pay').slice(0, 1).toUpperCase() + localStorage.getItem('Pay').slice(1);
+    pSum.innerText = 'Amount: ' + parseInt(localStorage.getItem('summarySum')).toFixed(2) + ' PLN';
     addedAccText.innerText = 'Added Accessories:'
     divSum.appendChild(h2Sum);
     divSum.appendChild(pName);
@@ -398,9 +401,9 @@ function openSummary() {
     const btn = document.createElement('button');
     btn.classList.add('btn');
     divBtn.classList.add('divBtn');
-    btn.innerText = 'Start';
+    btn.innerText = 'Main Page';
     divBtn.appendChild(btn);
-    $summaryContainer.parentNode.appendChild(divBtn);
+    $summaryContainer.insertAdjacentElement('afterend',divBtn);
     btn.addEventListener('click', function () {
       location.reload();
     });
@@ -417,7 +420,7 @@ function filterPC(array) {
   const computersWithAllKeywords = array.filter(computer => {
     return keywords.every(keyword => {
       return Object.values(computer).some(value => {
-        if (typeof value === 'string') {
+        if (typeof value === 'string' && computer['price'] <= $priceSlider.value) {
           return value.toLowerCase().includes(keyword);
         } else {
           return false;
@@ -488,10 +491,10 @@ $goToSummaryBtn.addEventListener('click', () => {
 
 $filterBtn.addEventListener('click', () => {
   clear$pcContainer();
-  createPcBox(filterPC(computers), $pcContainer)
+  createPcBox(filterPC(computers), $pcContainer);
 });
 
-form.addEventListener('keydown', function(event) {
+form.addEventListener('keydown', function (event) {
   if (event.key === 'Enter') {
     event.preventDefault();
   }
@@ -521,4 +524,8 @@ document.addEventListener('keydown', function (event) {
       $startBtn.click();
     }
   }
+});
+
+$priceSlider.addEventListener('change', (e) => {
+  $priceText.innerText = e.target.value;
 });

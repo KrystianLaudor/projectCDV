@@ -3,12 +3,27 @@ p {
 }
 
 body {
-  background-color: rgb(245, 245, 245);
+  background-color: rgb(243, 243, 243);
 }
+
+/* HEADING */
 
 .heading {
   text-align: center;
+  text-align: center;
+  font-size: 60px;
+  font-weight: bold;
+  text-shadow: none;
+  filter: drop-shadow(6px 6px 6px #6d6d6d);
+  user-select: none;
+  margin: 30px;
 }
+
+.hidden {
+  display: none !important; /* important or take it to the and of page */
+}
+
+/* IMAGES */
 
 img {
   height: 230px;
@@ -29,6 +44,8 @@ img {
 
 }
 
+/* CONTAINERS */
+
 .mainContainer {
   display: flex;
   flex-wrap: wrap;
@@ -37,10 +54,14 @@ img {
   margin: 0 20px;
   padding: 15px;
 
-  border: 5px solid rgb(122, 122, 122);
+  border: 5px solid rgb(122, 122, 122, 0.3);
   border-radius: 15px;
 
-  background-color: rgb(204, 204, 204);
+  background-color: rgb(177, 177, 177, 0.5);
+}
+
+#pcContainer, #formContainer {
+  margin-bottom: 60px;
 }
 
 .pcBox {
@@ -86,10 +107,6 @@ img {
 
 .noVisibility {
   visibility: hidden;
-}
-
-.hidden {
-  display: none;
 }
 
 .columnFlex {
@@ -139,10 +156,114 @@ img {
   gap: 10px;
 }
 
+.divSum > p{
+  font-size: 18px;
+}
+
 .addedAccText {
   font-size: large;
   font-weight: bold;
   margin-top: 15px;
+}
+
+.sumDiv {
+  font-size: 20px;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+/* FILTER */
+
+.filter {
+ flex-grow: 1;
+ flex-basis: 100%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin-bottom: 15px;
+ gap: 10px;
+ font-size: 16px;
+}
+
+.filter .filterInput {
+  width: 70%;
+  max-width: 300px;
+}
+
+#priceText {
+  width: 40px;
+}
+
+
+/* SLIDER */
+
+
+.filter .slider {
+  width: 50%;
+  max-width: 200px;
+  cursor: col-resize;
+}
+
+/* FORM */
+
+.accText2 {
+  font-weight: bold;
+  font-size: large;
+  padding-left: 20px;
+  font-size: 20px;
+}
+
+.textForm {
+  align-self: flex-start;
+  font-weight: bold;
+  font-size: large;
+  padding-left: 20px;
+  font-size: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+}
+
+.form > * {
+  box-sizing: content-box;
+  width: 200px;
+}
+
+.form #fname {
+  width: 196px;
+  font-size: 16px;
+}
+
+.form #deliverDate {
+  width: 130px;
+  font-size: 16px;
+}
+
+.radioFrame {
+  text-align: center;
+}
+
+.form p {
+  margin-top: 10px;
+}
+
+.form .deliverDate{
+  margin-top: 10px;
+}
+
+/* BUTTONS */
+
+.buttonDiv {
+  display: flex;
+  justify-content: flex-start;
+  gap: 30%;
 }
 
 .divBtn {
@@ -154,19 +275,56 @@ img {
   height: 40px;
   width: 200px;
   margin: 20px;
+  border: 2px solid rgba(126, 126, 126, 0.5);
+  background-color: rgba(78, 78, 78, 0.144);
+  margin-bottom: 60px;
 }
 
-.filter {
- flex-grow: 1;
- flex-basis: 100%;
- display: flex;
- justify-content: center;
- align-items: center;
- margin-bottom: 15px;
- gap: 10px;
+button {
+  box-sizing: content-box;
+  height: 36px;
+  background-color: #f0f0f0;
+  border: none;
+  color: #555;
+  padding: 0px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.filter input {
-  width: 70%;
-  max-width: 300px;
+button:active {
+  background-color: #ccc;
+  transform: translateY(2px);
+}
+
+button:hover,
+input:hover {
+  transform: scale(1.05);
+}
+
+/* FOOTER */
+a {
+  text-decoration: none;
+  color: black;
+  display: inline-block;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  padding: 10px;
+  background: linear-gradient( rgb(236, 235, 235), rgb(155, 155, 155) 50%);
+  box-shadow: 0px -3px 20px rgb(255, 255, 255);
+  color: black;
+  user-select: none;
 }
