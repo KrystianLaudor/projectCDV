@@ -134,7 +134,7 @@ function createStructurePcBox(pc, container, array) {
   if (container == $accContainer) {
     divPcImage.classList.add('accessImg');
     pcImage.classList.add('accessories');
-  } //........
+  } //.................
 
   for (let desk in array[0]) {
     if (desk === 'image') { continue }
@@ -289,7 +289,7 @@ function validate(field, regex) {
 function date2week() {
   const todayDate = new Date();
   todayDate.setDate(todayDate.getDate() + 14);
-  const day = todayDate.getDate();
+  const day = todayDate.getDate().toString().padStart(2, '0');
   const month = (todayDate.getMonth() + 1).toString().padStart(2, '0');
   const year = todayDate.getFullYear();
   $secondOption.innerText = day + '-' + month + '-' + year;
