@@ -6,7 +6,11 @@
     <title>PC Shop</title>
 
     <link rel="stylesheet" href="./styles/main.css" />
-    <script src="./scripts/main.js" defer></script>
+    <script type="module" src="./scripts/computerClass.js"></script>
+    <script type="module" src="./scripts/accessoryClass.js"></script>
+    <script type="module" src="./scripts/computerObject.js"></script>
+    <script type="module" src="./scripts/accessoriesObject.js"></script>
+    <script type="module" src="./scripts/main.js" defer></script>
   </head>
   <body>
     <h2 class="heading">Computer sets</h2>
@@ -55,7 +59,7 @@
         <label for="deliverDate" class="deliverDate"
           >Select a delivery date:</label
         >
-        <select id="deliverDate" name="deliverDate" form="deliverDate">
+        <select id="deliverDate" name="deliverDate">
           <option value="chooseDate">Date</option>
           <option value="date2week">xx/xx/xxxx</option>
         </select>

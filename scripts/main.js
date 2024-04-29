@@ -1,86 +1,20 @@
 //...................................................................
-// Create class Computer and class Accessory
-class Computer {
-  constructor(
-    procesor,
-    price,
-    graphicsCard,
-    motherboard,
-    ram,
-    category,
-    image = '',
-    discSSD = false,
-    discHDD = false,
-    system = false,
-    used = false,
-  ) {
-    this.procesor = procesor,
-      this.price = price,
-      this.graphicsCard = graphicsCard,
-      this.motherboard = motherboard,
-      this.ram = ram,
-      this.category = category,
-      this.image = image,
-      this.discSSD = discSSD,
-      this.discHDD = discHDD,
-      this.system = system,
-      this.used = used
-  };
-}
+// Imports
+import {
+  computer0, computer1, computer2, computer3, computer4, computer5, computer6, computer7, computer8, computer9, computer10, computer11,
+} from './computerObject.js';
 
-class Accessories {
-  constructor(
-    accessory,
-    price,
-    description,
-    image = '',
-  ) {
-    this.accessory = accessory,
-      this.price = price,
-      this.description = description,
-      this.image = image
-  }
-}
+import {
+  accessories0, accessories1, accessories2,
+} from './accessoriesObject.js';
 
-//...................................................................
-// Renaming all files with bash at location ./assets/computer
-/* 
-i=1
-for file in computers/*; do
-mv "$file" "computer${i}.jpg"
-i=$((i+1))
-done
-*/
-
-//...................................................................
-// Database of all desktops (PC) and Accessories
-
-const computer0 = new Computer('Apple iMac 27\"', 10000, 'AMD Radeon Pro 5700 XT', 'Apple', '32 GB', 'Professional', './assets/computers/computer0.jpg', '1 TB', false, 'macOS');
-const computer1 = new Computer('Apple Mac Pro', 15000, 'AMD Radeon Pro Vega II Duo', 'Apple', '64 GB', 'Professional', './assets/computers/computer1.jpg', '4 TB', false, 'macOS');
-const computer2 = new Computer('AMD Ryzen 5 5600X', 6410, 'RTX 3060', 'ASUS', '16 GB', 'Home', './assets/computers/computer2.jpg', '512 GB', '2 TB', 'Win 11');
-const computer3 = new Computer('Intel Core i5-11600K', 7210, 'GTX 1660 Super', 'Gigabyte', '16 GB', 'Gaming', './assets/computers/computer3.jpg', '2 TB', '1 TB');
-const computer4 = new Computer('AMD Ryzen 9 5900X', 14550, 'RTX 3080', 'ASRock', '32 GB', 'Professional', './assets/computers/computer4.jpg', '1.5 TB', false, 'Win 11');
-const computer5 = new Computer('Intel Core i7-11700K', 11050, 'RTX 3060 Ti', 'MSI', '32 GB', 'Gaming', './assets/computers/computer5.jpg', '1 TB', '1 TB');
-const computer6 = new Computer('AMD Ryzen 7 3800X', 5460, 'GTX 1650', 'ASUS', '8 GB', 'Home', './assets/computers/computer6.jpg', '512 GB', '512 GB');
-const computer7 = new Computer('Intel Core i5-11400F', 6980, 'GTX 1660', 'Gigabyte', '8 GB', 'Office', './assets/computers/computer7.jpg', '1.5 TB', false, 'Win Vista');
-const computer8 = new Computer('AMD Ryzen 7 5800X', 11700, 'RX 6700 XT', 'ASRock', '16 GB', 'Gaming', './assets/computers/computer8.jpg', '2 TB', '2 TB', 'Win 10');
-const computer9 = new Computer('Intel Core i5-11400', 3460, 'GTX 1050 Ti', 'MSI', '8 GB', 'Office', './assets/computers/computer9.jpg', '1 TB', 'Win 7');
-const computer10 = new Computer('Apple M1', 3500, 'Apple GPU', 'Apple', '16 GB', 'Professional', './assets/computers/computer10.jpg', '512 GB', false, 'macOS');
-const computer11 = new Computer('Intel Core i3-10100F', 2300, '', 'MSI', '8 GB', 'Office', './assets/computers/computer11.jpg', '512 GB');
-
-let computers = [
+const computers = [
   computer0, computer1, computer2, computer3, computer4, computer5, computer6, computer7, computer8, computer9, computer10, computer11,
 ];
-console.log(computers);
 
-const accessories0 = new Accessories('Water cooling Kraken', 699, 'Temperature reduction by 20%', './assets/kraken.jpg');
-const accessories1 = new Accessories('Set logitech', 899, 'The perfect set for your computer', './assets/logitech.jpg');
-const accessories2 = new Accessories('Dysk Samsung SSD 1 TB', 499, 'Increase your memory', './assets/samsung.jpg');
-
-let accessories = [
+const accessories = [
   accessories0, accessories1, accessories2
 ];
-
 
 //...................................................................
 // Declarations
@@ -120,7 +54,6 @@ function createStructurePcBox(pc, container, array) {
   const divPcBox = document.createElement('div');
   const divPcImage = document.createElement('div');
   const divPcData = document.createElement('div');
-  // divPcBox.setAttribute('data-description', JSON.stringify(pc)); // created and saved json string to data description with all informations about pc
   divPcBox.setAttribute('data-description', array.indexOf(pc));
 
   divPcBox.classList.add('pcBox');
@@ -131,28 +64,28 @@ function createStructurePcBox(pc, container, array) {
   divPcImage.appendChild(pcImage);
 
   // For accessory
-  if (container == $accContainer) {
+  if (container === $accContainer) {
     divPcImage.classList.add('accessImg');
     pcImage.classList.add('accessories');
   } //.................
 
-  for (let desk in array[0]) {
+  for (let desk in pc) {
     if (desk === 'image') { continue }
 
     const pSet = document.createElement('p');
     const spanSet = document.createElement('span');
     spanSet.classList.add(desk);
 
-    if (pc[desk] == false || pc[desk] == true) {
+    if (typeof pc[desk] === 'boolean') {
       continue;
     } else {
       spanSet.innerText = pc[desk];
       if (desk === 'price') { spanSet.innerText = pc[desk] + ' PLN' }
     }
 
-    if ((container !== $accContainer) || (desk == 'price')) { pSet.innerText = desk.slice(0, 1).toUpperCase() + desk.slice(1, desk.length) + ': ' };
+    if ((container !== $accContainer) || (desk === 'price')) { pSet.innerText = desk.slice(0, 1).toUpperCase() + desk.slice(1, desk.length) + ': ' };
 
-    if (container == $chosenPcContainer && desk == 'price') {
+    if (container === $chosenPcContainer && desk === 'price') {
       continue;
     }
 
@@ -166,7 +99,7 @@ function createStructurePcBox(pc, container, array) {
 }
 
 
-let createPcBox = function (array, container) {
+const createPcBox = function (array, container) {
   for (let pc of array) {
     createStructurePcBox(pc, container, array)
   }
@@ -185,7 +118,7 @@ loadLocalStorage();
 //......................................................
 // Load data from localStorage
 function loadLocalStorage() {
-  let pay = localStorage.getItem('Pay')
+  const pay = localStorage.getItem('Pay')
   if (pay === 'leasing') {
     $leasing.checked = 1;
   }
@@ -194,7 +127,7 @@ function loadLocalStorage() {
   }
   $fname.value = localStorage.getItem('FirstAndLastName');
 
-  let saveDate = localStorage.getItem('Date', $secondOption.innerText);
+  const saveDate = localStorage.getItem('Date', $secondOption.innerText);
   if (date2week() === saveDate) {
     $deliverDateSelect.selectedIndex = 1;
   }
@@ -223,7 +156,6 @@ function checkPcBox(event) {
 function createChosenPc(clickedElement) {
   removeAllChild($chosenPcContainer);
   localStorage.setItem('chosenPC', JSON.stringify(computers[clickedElement.dataset.description]));
-  // const chosenPc = JSON.parse(clickedElement.getAttribute('data-description')); // read before created json string  with all informations about pc
   const chosenPc = computers[clickedElement.dataset.description];
   createStructurePcBox(chosenPc, $chosenPcContainer, computers);
   return chosenPc;
@@ -253,14 +185,14 @@ function addAcc(event) {
 
       if (clickedElement.classList.contains('addedAcc')) {
         clickedElement.classList.remove('addedAcc');
-        addToSum(-accessories[clickedElement.dataset.description]['price']); // addToSum(-JSON.parse(clickedElement.getAttribute('data-description'))['price']);
+        addToSum(-accessories[clickedElement.dataset.description]['price']);
         arrayAccLocalStorage = arrayAccLocalStorage.filter(element => {
           return element != JSON.stringify(accessories[clickedElement.dataset.description]);
         })
         localStorage.setItem('chosenAcc', arrayAccLocalStorage);
       } else {
         clickedElement.classList.add('addedAcc');
-        addToSum(accessories[clickedElement.dataset.description]['price']); // addToSum(JSON.parse(clickedElement.getAttribute('data-description'))['price']);
+        addToSum(accessories[clickedElement.dataset.description]['price']);
         arrayAccLocalStorage.push(JSON.stringify(accessories[clickedElement.dataset.description]));
 
         localStorage.setItem('chosenAcc', arrayAccLocalStorage);
@@ -403,7 +335,7 @@ function openSummary() {
     divBtn.classList.add('divBtn');
     btn.innerText = 'Main Page';
     divBtn.appendChild(btn);
-    $summaryContainer.insertAdjacentElement('afterend',divBtn);
+    $summaryContainer.insertAdjacentElement('afterend', divBtn);
     btn.addEventListener('click', function () {
       location.reload();
     });
